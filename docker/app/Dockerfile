@@ -30,7 +30,7 @@ COPY ./docker/app/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
 USER root
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 RUN groupmod -o -g ${PGID} www-data && \
     usermod -o -u ${PUID} -g www-data www-data
