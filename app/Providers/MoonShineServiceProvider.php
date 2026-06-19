@@ -6,10 +6,12 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
-use MoonShine\Laravel\DependencyInjection\MoonShine;
 use MoonShine\Laravel\DependencyInjection\MoonShineConfigurator;
 use App\MoonShine\Resources\MoonShineUser\MoonShineUserResource;
 use App\MoonShine\Resources\MoonShineUserRole\MoonShineUserRoleResource;
+use App\MoonShine\Resources\Body\BodyResource;
+use App\MoonShine\Resources\Food\FoodResource;
+use App\MoonShine\Resources\Image\ImageResource;
 
 class MoonShineServiceProvider extends ServiceProvider
 {
@@ -22,6 +24,9 @@ class MoonShineServiceProvider extends ServiceProvider
             ->resources([
                 MoonShineUserResource::class,
                 MoonShineUserRoleResource::class,
+                BodyResource::class,
+                FoodResource::class,
+                ImageResource::class,
             ])
             ->pages([
                 ...$core->getConfig()->getPages(),
