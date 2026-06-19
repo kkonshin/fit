@@ -34,12 +34,8 @@ class BodyDetailPage extends DetailPage
     {
         return [
             Preview::make('Дата', 'created_at')
-                ->changePreview(fn($date) => Carbon::parse($date)->isoFormat('D MMMM YYYY')),
+                ->changePreview(fn ($date) => Carbon::parse($date)->isoFormat('D MMMM YYYY')),
             Number::make('Вес', 'weight'),
-            HasMany::make('Фото', 'images', ImageResource::class)->fields([
-                // TODO callback в label?
-                Image::make('', 'path'),
-            ]),
             Number::make('Пульс в покое', 'pulse'),
             Number::make('Шея', 'neck'),
             Number::make('Грудь', 'chest'),
@@ -51,6 +47,12 @@ class BodyDetailPage extends DetailPage
             Number::make('Бедро', 'hip'),
             Number::make('Голень', 'shin'),
             Number::make('Лодыжка', 'ankle'),
+            HasMany::make('Фото', 'images', ImageResource::class)
+                ->modalMode()
+                ->fields([
+                    // TODO callback в label?
+                    Image::make('', 'path'),
+                ]),
         ];
     }
 
