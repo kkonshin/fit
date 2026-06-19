@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y \
     docker-php-ext-install bcmath && \
     docker-php-ext-install gd && \
     docker-php-ext-install zip && \
+    docker-php-ext-install pcntl && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 # Download and install PIE
 RUN curl -sSLf -o /usr/local/bin/pie https://github.com/php/pie/releases/latest/download/pie.phar \

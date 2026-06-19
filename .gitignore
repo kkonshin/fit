@@ -27,6 +27,6 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
-/.composer/
+/.composer
 /.config/psysh/psysh_history
 .bash_history
