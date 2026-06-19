@@ -28,3 +28,5 @@ yarn-error.log
 /.vscode
 /.zed
 /.composer/
+/.config/psysh/psysh_history
+.bash_history
