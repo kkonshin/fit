@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources\Image;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Image;
-use App\MoonShine\Resources\Image\Pages\ImageIndexPage;
-use App\MoonShine\Resources\Image\Pages\ImageFormPage;
 use App\MoonShine\Resources\Image\Pages\ImageDetailPage;
-
-use MoonShine\Laravel\Resources\ModelResource;
+use App\MoonShine\Resources\Image\Pages\ImageFormPage;
+use App\MoonShine\Resources\Image\Pages\ImageIndexPage;
 use MoonShine\Contracts\Core\PageContract;
+use MoonShine\Laravel\Resources\ModelResource;
 
 /**
  * @extends ModelResource<Image, ImageIndexPage, ImageFormPage, ImageDetailPage>
@@ -20,8 +18,8 @@ class ImageResource extends ModelResource
 {
     protected string $model = Image::class;
 
-    protected string $title = 'Images';
-    
+    protected string $title = 'Фотографии';
+
     /**
      * @return list<class-string<PageContract>>
      */

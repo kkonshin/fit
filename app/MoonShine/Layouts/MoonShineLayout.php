@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Layouts;
 
-use MoonShine\ColorManager\Palettes\PurplePalette;
-use MoonShine\Laravel\Layouts\AppLayout;
-use MoonShine\ColorManager\ColorManager;
-use MoonShine\Contracts\ColorManager\ColorManagerContract;
-use MoonShine\Contracts\ColorManager\PaletteContract;
 use App\MoonShine\Resources\Body\BodyResource;
-use MoonShine\MenuManager\MenuItem;
+use App\MoonShine\Resources\Exercise\ExerciseResource;
 use App\MoonShine\Resources\Food\FoodResource;
 use App\MoonShine\Resources\Image\ImageResource;
+use MoonShine\ColorManager\ColorManager;
+use MoonShine\ColorManager\Palettes\PurplePalette;
+use MoonShine\Contracts\ColorManager\ColorManagerContract;
+use MoonShine\Contracts\ColorManager\PaletteContract;
+use MoonShine\Laravel\Layouts\AppLayout;
+use MoonShine\MenuManager\MenuItem;
 
 final class MoonShineLayout extends AppLayout
 {
@@ -32,14 +33,15 @@ final class MoonShineLayout extends AppLayout
     {
         return [
             ...parent::menu(),
-            MenuItem::make(BodyResource::class, 'Параметры тела'),
-            MenuItem::make(FoodResource::class, 'Продукты'),
-            MenuItem::make(ImageResource::class, 'Фотографии'),
+            MenuItem::make(BodyResource::class, 'Параметры тела')->icon('user'),
+            MenuItem::make(FoodResource::class, 'Продукты')->icon('cake'),
+            MenuItem::make(ImageResource::class, 'Фотографии')->icon('photo'),
+            MenuItem::make(ExerciseResource::class, 'Упражнения')->icon('trophy'),
         ];
     }
 
     /**
-     * @param ColorManager $colorManager
+     * @param  ColorManager  $colorManager
      */
     protected function colors(ColorManagerContract $colorManager): void
     {

@@ -37,7 +37,7 @@ class BodyFormPage extends FormPage
             Grid::make([
                 Column::make([
                     Preview::make('', 'created_at')
-                        ->changePreview(fn($date) => Carbon::parse($date)->isoFormat('D MMMM YYYY')),
+                        ->changePreview(fn ($date) => Carbon::parse($date)->isoFormat('D MMMM YYYY')),
                     Box::make('Параметры:', [
                         ID::make(),
                         Number::make('Вес', 'weight')
@@ -67,7 +67,7 @@ class BodyFormPage extends FormPage
                                     ->dir('upload/images')
                                     ->disk('public'),
                             ])
-                            ->removable()
+                            ->removable(),
                     ]),
                 ]),
             ]),
@@ -80,7 +80,7 @@ class BodyFormPage extends FormPage
     }
 
     /**
-     * @param FormBuilder $component
+     * @param  FormBuilder  $component
      * @return FormBuilder
      */
     protected function modifyFormComponent(FormBuilderContract $component): FormBuilderContract

@@ -34,7 +34,7 @@ class BodyIndexPage extends IndexPage
         return [
             ID::make(),
             Date::make('Дата', 'created_at')
-                ->changePreview(fn($date) => Carbon::parse($date)->isoFormat('D MMMM YYYY')),
+                ->changePreview(fn ($date) => Carbon::parse($date)->isoFormat('D MMMM YYYY')),
             Number::make('Вес', 'weight'),
         ];
     }
