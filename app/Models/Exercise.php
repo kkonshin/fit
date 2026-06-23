@@ -9,21 +9,16 @@ class Exercise extends Model
 {
     protected $guarded = ['id'];
 
-    protected $casts = ['calories' => 'integer'];
+    protected $casts = [
+        'calories' => 'integer',
+        'extra' => 'array',
+    ];
 
-    /**
-     * @param Builder $query
-     * @return Builder
-     */
     public function scopeCreatedToday(Builder $query): Builder
     {
         return $query->whereDate('created_at', today());
     }
 
-    /**
-     * @param Builder $query
-     * @return Builder
-     */
     public function scopeCreatedYesterday(Builder $query): Builder
     {
         return $query->whereBetween('created_at', [

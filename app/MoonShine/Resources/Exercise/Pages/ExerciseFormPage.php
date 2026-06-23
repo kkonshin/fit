@@ -13,6 +13,7 @@ use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Laravel\Pages\Crud\FormPage;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Fields\Json;
 use MoonShine\UI\Fields\Number;
 use MoonShine\UI\Fields\Preview;
 use MoonShine\UI\Fields\Text;
@@ -37,6 +38,10 @@ class ExerciseFormPage extends FormPage
                 Number::make('Продолжительность', 'duration'),
                 Number::make('Средний пульс', 'pulse_avg'),
                 Number::make('Максимальный пульс', 'pulse_max'),
+                Json::make('Дополнительные сведения', 'extra')
+                    ->fields([
+                        Text::make('Расстояние', 'distance'),
+                    ]),
             ]),
         ];
     }

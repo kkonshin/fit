@@ -11,6 +11,7 @@ use MoonShine\Laravel\Pages\Crud\DetailPage;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Image;
+use MoonShine\UI\Fields\Text;
 use Throwable;
 
 /**
@@ -25,7 +26,8 @@ class ImageDetailPage extends DetailPage
     {
         return [
             ID::make(),
-            Image::make('', ''),
+            Image::make('Превью', 'path'),
+            Text::make('Комментарий', 'comment'),
         ];
     }
 

@@ -15,6 +15,7 @@ use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Fields\Image;
 use MoonShine\UI\Fields\Number;
 use MoonShine\UI\Fields\Preview;
+use MoonShine\UI\Fields\Text;
 use Throwable;
 
 /**
@@ -50,8 +51,8 @@ class BodyDetailPage extends DetailPage
             HasMany::make('Фото', 'images', ImageResource::class)
                 ->modalMode()
                 ->fields([
-                    // TODO callback в label?
                     Image::make('', 'path'),
+                    Text::make('Комментарий', 'comment'),
                 ]),
         ];
     }

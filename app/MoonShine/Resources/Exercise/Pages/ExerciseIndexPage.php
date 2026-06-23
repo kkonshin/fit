@@ -15,6 +15,7 @@ use MoonShine\Support\ListOf;
 use MoonShine\UI\Components\Metrics\Wrapped\Metric;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Json;
 use MoonShine\UI\Fields\Number;
 use MoonShine\UI\Fields\Preview;
 use MoonShine\UI\Fields\Text;
@@ -36,11 +37,15 @@ class ExerciseIndexPage extends IndexPage
             ID::make(),
             Preview::make('', 'created_at')
                 ->changePreview(fn ($date) => Carbon::parse($date)->isoFormat('D MMMM YYYY')),
-            Text::make('Упражнение', 'name'),
+            Text::make('Активность', 'name'),
             Number::make('Затраты калорий', 'calories'),
             Number::make('Продолжительность', 'duration'),
             Number::make('Средний пульс', 'pulse_avg'),
             Number::make('Максимальный пульс', 'pulse_max'),
+            Json::make('Дополнительные сведения', 'extra')
+                ->fields([
+                    Text::make('Расстояние', 'distance'),
+                ]),
         ];
     }
 

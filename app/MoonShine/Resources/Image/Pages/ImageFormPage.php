@@ -10,10 +10,11 @@ use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Laravel\Pages\Crud\FormPage;
-use MoonShine\Support\ListOf;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Image;
+use MoonShine\UI\Fields\Text;
 use Throwable;
 
 /**
@@ -29,6 +30,10 @@ class ImageFormPage extends FormPage
         return [
             Box::make([
                 ID::make(),
+                Image::make('Файл фотографии', 'path')
+                    ->dir('upload/images')
+                    ->disk('public'),
+                Text::make('Комментарий', 'comment'),
             ]),
         ];
     }

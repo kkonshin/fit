@@ -21,6 +21,7 @@ use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Image;
 use MoonShine\UI\Fields\Number;
 use MoonShine\UI\Fields\Preview;
+use MoonShine\UI\Fields\Text;
 use Throwable;
 
 /**
@@ -66,6 +67,7 @@ class BodyFormPage extends FormPage
                                 Image::make('Фотография', 'path')
                                     ->dir('upload/images')
                                     ->disk('public'),
+                                Text::make('Комментарий', 'comment'),
                             ])
                             ->removable(),
                     ]),

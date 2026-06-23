@@ -32,11 +32,11 @@ final class MoonShineLayout extends AppLayout
     protected function menu(): array
     {
         return [
-            ...parent::menu(),
             MenuItem::make(BodyResource::class, 'Параметры тела')->icon('user'),
             MenuItem::make(FoodResource::class, 'Продукты')->icon('cake'),
             MenuItem::make(ImageResource::class, 'Фотографии')->icon('photo'),
             MenuItem::make(ExerciseResource::class, 'Упражнения')->icon('trophy'),
+            ...parent::menu(),
         ];
     }
 
