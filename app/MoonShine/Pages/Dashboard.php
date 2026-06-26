@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Pages;
 
+use App\Models\Body;
 use App\Models\Exercise;
+use MoonShine\Apexcharts\Components\LineChartMetric;
+use MoonShine\Apexcharts\Support\SeriesItem;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Laravel\Pages\Page;
 use MoonShine\MenuManager\Attributes\SkipMenu;
@@ -14,7 +17,6 @@ use MoonShine\UI\Components\Layout\Grid;
 use MoonShine\UI\Components\Metrics\Wrapped\ValueMetric;
 
 #[SkipMenu]
-
 class Dashboard extends Page
 {
     /**
@@ -37,6 +39,16 @@ class Dashboard extends Page
      */
     protected function components(): iterable
     {
+        $weights = Body::query()
+            ->select(['weight', 'created_at'])
+            ->get()
+            ->mapWithKeys(function ($weight) {
+                return [
+                    $weight->created_at->format('Y-m-d') => $weight->weight,
+                ];
+            })
+            ->toArray();
+
         return [
             Grid::make([
                 Column::make([
@@ -44,14 +56,18 @@ class Dashboard extends Page
                         ValueMetric::make('Затраты калорий вчера')
                             ->value(static fn (): int => Exercise::createdYesterday()->get()
                                 ->sum('calories'))
-                            ->progress(2000),
+                            ->progress(500),
                         ValueMetric::make('Затраты калорий сегодня')
                             ->value(static fn (): int => Exercise::createdToday()->get()
                                 ->sum('calories'))
-                            ->progress(2000),
+                            ->progress(500),
                     ]),
 
-                ]),
+                ], 6),
+                Column::make([
+                    LineChartMetric::make('Вес')
+                        ->series(SeriesItem::make('Вес', $weights)),
+                ], 6),
             ]),
         ];
     }

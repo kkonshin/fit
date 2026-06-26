@@ -15,9 +15,9 @@ use MoonShine\Laravel\Pages\Crud\FormPage;
 use MoonShine\UI\Components\FlexibleRender;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Fields\Date;
 use MoonShine\UI\Fields\Json;
 use MoonShine\UI\Fields\Number;
-use MoonShine\UI\Fields\Preview;
 use MoonShine\UI\Fields\Text;
 use Throwable;
 
@@ -33,8 +33,9 @@ class ExerciseFormPage extends FormPage
     {
         return [
             Box::make([
-                Preview::make('', 'created_at')
-                    ->changePreview(fn ($date) => Carbon::parse($date)->isoFormat('D MMMM YYYY')),
+                Date::make('', 'created_at')
+                    ->format('d-m-Y')
+                    ->default(Carbon::today()->toDateTimeString()),
                 Text::make('Упражнение', 'name')
                     ->customAttributes([
                         'list' => 'exercise-name-suggestions',
