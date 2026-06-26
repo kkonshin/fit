@@ -266,8 +266,7 @@ server {
 }
 
 server {
-    listen 443 ssl;
-    http2 on;
+    listen 443 ssl http2;
     server_name 4303723-ea97251.twc1.net 193.160.209.121;
 
     ssl_certificate     /etc/nginx/ssl/fit-selfsigned.crt;
