@@ -23,9 +23,9 @@ install: ## Установка проекта
 		read -r -p "Вы настроили файл .env? [y/N]: " CONTINUE; \
 	done; [ $$CONTINUE = "y" ] || [ $$CONTINUE = "Y" ] || (echo "Отменено!"; exit 1;)
 	make metrics_network
-	docker compose run --rm nodejs npm ci && make frontend-build
+	docker compose run --rm node ci && make frontend-build
 	make restore
-	make build && docker-compose up -d --wait
+	make build && docker compose up -d --wait
 
 
 .PHONY: up
@@ -88,11 +88,11 @@ test: ## Протестировать проект
 
 .PHONY: frontend-watch
 frontend-watch: ## Сборка frontend для локальной разработки
-	docker compose run --rm nodejs bash -c 'npx mix watch'
+	docker compose run --rm node run build -- --watch
 
 .PHONY: frontend-build
 frontend-build: ## Сборка frontend
-	docker compose run --rm nodejs bash -c 'npx mix build'
+	docker compose run --rm node run build
 
 .PHONY: rector-dry
 rector-dry: ## План рефакторинга без внесения изменений в код

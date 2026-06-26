@@ -57,7 +57,13 @@ services:
 
     # Node/NPM Service
     node:
-        image: node:18
+        build:
+            context: .
+            dockerfile: docker/app/Dockerfile
+            args:
+                PGID: "${PGID:-1000}"
+                PUID: "${PUID:-1000}"
+        image: ${COMPOSE_PROJECT_NAME}/app
         container_name: "${APP_NAME}-node"
         volumes:
             - ./:/var/www
