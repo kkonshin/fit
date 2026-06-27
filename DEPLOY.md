@@ -5,6 +5,23 @@
 Проект расположен в каталоге `/var/www/fit` и запускается в Docker-контейнерах.
 HTTPS будет завершаться на системном `nginx` хоста, а затем трафик будет проксироваться во внутренний `nginx` контейнера Docker.
 
+## Оглавление
+
+1. [Схема работы](#scheme)
+2. [Установка пакетов на сервере](#install-packages)
+3. [Проверка домена](#check-domain)
+4. [Подготовка проекта](#prepare-project)
+5. [Рекомендуемая настройка внутреннего `nginx` в Docker](#docker-nginx)
+6. [Сборка и запуск контейнеров](#build-and-run)
+7. [Генерация и перенос дампа базы данных](#db-dump)
+8. [Генерация самоподписанного сертификата](#ssl-cert)
+9. [Настройка внешнего `nginx` на сервере](#host-nginx)
+10. [Проверка работы](#verification)
+11. [Полезная диагностика](#diagnostics)
+12. [Что важно учесть](#important-notes)
+13. [Итог](#summary)
+
+<a id="scheme"></a>
 ## Схема работы
 
 1. Системный `nginx` на сервере:
@@ -22,8 +39,7 @@ HTTPS будет завершаться на системном `nginx` хост
 - контейнеры не нужно усложнять сертификатами;
 - внутренний HTTP-порт приложения не торчит наружу.
 
----
-
+<a id="install-packages"></a>
 ## 1. Установка пакетов на сервере
 
 ```bash
@@ -45,8 +61,7 @@ sudo systemctl enable --now docker
 sudo systemctl enable --now nginx
 ```
 
----
-
+<a id="check-domain"></a>
 ## 2. Проверка домена
 
 Убедиться, что домен `4303723-ea97251.twc1.net` указывает на сервер `193.160.209.121`.
@@ -63,8 +78,7 @@ dig +short 4303723-ea97251.twc1.net
 193.160.209.121
 ```
 
----
-
+<a id="prepare-project"></a>
 ## 3. Подготовка проекта
 
 Перейти в каталог проекта:
@@ -109,8 +123,7 @@ id
 
 Для frontend-сборки проект требует `Node.js 22.13+`. В `docker-compose.yml` сервис `node` использует тот же образ, что и `app`, поэтому внутри него доступны и `Node.js`, и `php artisan`, который нужен Vite-плагинам во время сборки.
 
----
-
+<a id="docker-nginx"></a>
 ## 4. Рекомендуемая настройка внутреннего nginx в Docker
 
 Открыть файл:
@@ -133,8 +146,7 @@ server_name 4303723-ea97251.twc1.net 193.160.209.121 localhost;
 
 Это не строго обязательно для reverse proxy, но лучше явно указать домен.
 
----
-
+<a id="build-and-run"></a>
 ## 5. Сборка и запуск контейнеров
 
 Собрать PHP-образ:
@@ -150,6 +162,47 @@ docker compose build app
 ```bash
 docker compose up -d db redis memcached
 ```
+
+<a id="db-dump"></a>
+### 5.1. Генерация и перенос дампа базы данных
+
+Если нужно перенести существующие данные в production, сделайте это до запуска миграций.
+
+Создать дамп PostgreSQL на исходной машине, где сейчас находится актуальная БД:
+
+```bash
+docker compose exec -T db pg_dump -U laravel -d laravel -Fc --no-owner --no-privileges > fit-$(date +%F).dump
+```
+
+Если исходная БД запущена не в Docker, можно использовать обычный `pg_dump` с теми же параметрами:
+
+```bash
+pg_dump -h 127.0.0.1 -p 5432 -U laravel -d laravel -Fc --no-owner --no-privileges > fit-$(date +%F).dump
+```
+
+Передать дамп на production-сервер:
+
+```bash
+scp fit-$(date +%F).dump webdev@193.160.209.121:~/fit-db.dump
+```
+
+Подключиться к production-серверу и восстановить дамп в контейнер `db`:
+
+```bash
+ssh webdev@193.160.209.121
+cd /var/www/fit
+docker compose exec -T db pg_restore -U laravel -d laravel --clean --if-exists --no-owner --no-privileges < ~/fit-db.dump
+```
+
+Если дамп заливается в уже работающее production-приложение, на время восстановления лучше включить maintenance mode:
+
+```bash
+docker compose exec app php artisan down
+docker compose exec -T db pg_restore -U laravel -d laravel --clean --if-exists --no-owner --no-privileges < ~/fit-db.dump
+docker compose exec app php artisan up
+```
+
+После восстановления дампа можно продолжать деплой: выполнить миграции, чтобы подтянуть возможные новые изменения схемы, и затем прогреть кэши Laravel.
 
 Установить PHP-зависимости:
 
@@ -218,8 +271,7 @@ docker compose exec app php artisan optimize
 docker compose ps
 ```
 
----
-
+<a id="ssl-cert"></a>
 ## 6. Генерация самоподписанного сертификата
 
 Создать каталог под сертификаты:
@@ -245,8 +297,7 @@ sudo chmod 600 /etc/nginx/ssl/fit-selfsigned.key
 sudo chmod 644 /etc/nginx/ssl/fit-selfsigned.crt
 ```
 
----
-
+<a id="host-nginx"></a>
 ## 7. Настройка внешнего nginx на сервере
 
 Создать файл конфигурации:
@@ -318,8 +369,7 @@ sudo nginx -t
 sudo systemctl reload nginx
 ```
 
----
-
+<a id="verification"></a>
 ## 8. Проверка работы
 
 Проверить, что внутренний контейнерный `nginx` отвечает локально:
@@ -342,8 +392,7 @@ https://4303723-ea97251.twc1.net
 
 Важно: браузер покажет предупреждение безопасности, потому что сертификат самоподписанный. Это нормально. Нужно вручную подтвердить исключение.
 
----
-
+<a id="diagnostics"></a>
 ## 9. Полезная диагностика
 
 Логи Docker-контейнеров:
@@ -365,8 +414,7 @@ sudo journalctl -u nginx -f
 sudo ss -tulpn | grep -E ':80|:443|:8080'
 ```
 
----
-
+<a id="important-notes"></a>
 ## 10. Что важно учесть
 
 1. Самоподписанный сертификат подходит для тестового, внутреннего или личного использования.
@@ -381,8 +429,7 @@ sudo ss -tulpn | grep -E ':80|:443|:8080'
 docker compose up -d --force-recreate webserver
 ```
 
----
-
+<a id="summary"></a>
 ## 11. Итог
 
 После выполнения шагов сайт должен открываться по адресу:
