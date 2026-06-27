@@ -140,4 +140,5 @@ restore: ## Восстановление дампа БД
 
 .PHONY: optimize
 optimize:
-	docker compose exec app php artisan optimize:clear && php artisan optimize
+	docker compose exec app php artisan optimize:clear \
+	&& docker compose exec app php artisan optimize
