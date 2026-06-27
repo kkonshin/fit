@@ -37,7 +37,7 @@ up: ## Запустить сервер
 .PHONY: down
 down: ## Остановить сервер
 	@echo -e "${FRMT_INVRS} Остановка сервера... ${FRMT_NORM}"
-	docker compose down
+	docker compose down --remove-orphans
 
 
 .PHONY: console
@@ -110,3 +110,30 @@ stan: ## Запуск статического анализатора
 .PHONY: coverage
 coverage: ## Статистика покрытия тестами
 	docker compose exec -e XDEBUG_MODE=coverage app php artisan test --coverage
+
+.PHONY: dump
+dump: ## Создание дампа БД
+	@echo -e "${FRMT_INVRS} Создание дампа БД... ${FRMT_NORM}"
+	DUMP_FILE="fit-$$(date +%F).dump"
+	echo "Файл дампа: $$DUMP_FILE"
+	docker compose exec -T db pg_dump -U laravel -d laravel -Fc --no-owner --no-privileges > "$$DUMP_FILE"
+
+.PHONY: restore
+restore: ## Восстановление дампа БД
+	@echo -e "${FRMT_INVRS} Восстановление дампа БД... ${FRMT_NORM}"
+	shopt -s nullglob
+	set -- ./*.dump
+	if [ "$$1" = "./*.dump" ]; then
+		echo "В корне проекта не найдено ни одного файла *.dump"
+		exit 1
+	fi
+	echo "Выберите дамп для восстановления:"
+	PS3="Введите номер дампа: "
+	select DUMP_FILE in "$$@"; do
+		if [ -n "$$DUMP_FILE" ]; then
+			echo "Выбран дамп: $$DUMP_FILE"
+			docker compose exec -T db pg_restore -U webdev -d laravel --clean --if-exists --no-owner --no-privileges < "$$DUMP_FILE"
+			break
+		fi
+		echo "Некорректный выбор. Попробуйте снова."
+	done

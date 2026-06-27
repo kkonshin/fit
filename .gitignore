@@ -31,3 +31,4 @@ yarn-error.log
 /.composer
 /.config/psysh/psysh_history
 .bash_history
+/*.dump
