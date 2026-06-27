@@ -18,10 +18,10 @@ use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Components\Layout\Column;
 use MoonShine\UI\Components\Layout\Grid;
+use MoonShine\UI\Fields\Date;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Image;
 use MoonShine\UI\Fields\Number;
-use MoonShine\UI\Fields\Preview;
 use MoonShine\UI\Fields\Text;
 use Throwable;
 
@@ -35,7 +35,8 @@ class BodyFormPage extends FormPage
      */
     protected function fields(): iterable
     {
-        $previousWeight = Body::query()->select('weight')
+        $previousWeight = Body::query()
+            ->select('weight')
             ->orderBy('updated_at', 'desc')
             ->first()
             ->weight;
@@ -43,8 +44,9 @@ class BodyFormPage extends FormPage
         return [
             Grid::make([
                 Column::make([
-                    Preview::make('', 'created_at')
-                        ->changePreview(fn ($date) => Carbon::parse($date)->isoFormat('D MMMM YYYY')),
+                    Date::make('', 'created_at')
+                        ->format('d-m-Y')
+                        ->default(Carbon::today()->toDateTimeString()),
                     Box::make('Параметры:', [
                         ID::make(),
                         Number::make('Вес', 'weight')
