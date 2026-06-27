@@ -137,3 +137,7 @@ restore: ## Восстановление дампа БД
 		fi
 		echo "Некорректный выбор. Попробуйте снова."
 	done
+
+.PHONY: optimize
+optimize:
+	docker compose exec app php artisan optimize:clear && php artisan optimize
