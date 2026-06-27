@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources\Body\Pages;
 
+use App\Models\Body;
 use App\MoonShine\Resources\Body\BodyResource;
 use App\MoonShine\Resources\Image\ImageResource;
 use Illuminate\Support\Carbon;
@@ -34,6 +35,11 @@ class BodyFormPage extends FormPage
      */
     protected function fields(): iterable
     {
+        $previousWeight = Body::query()->select('weight')
+            ->orderBy('updated_at', 'desc')
+            ->first()
+            ->weight;
+
         return [
             Grid::make([
                 Column::make([
@@ -42,7 +48,7 @@ class BodyFormPage extends FormPage
                     Box::make('Параметры:', [
                         ID::make(),
                         Number::make('Вес', 'weight')
-                            ->default(77.0) // TODO дефолты брать из предыдущего Id/последнего по времени
+                            ->default($previousWeight)
                             ->step(0.05)
                             ->buttons(),
                         Number::make('Пульс в покое', 'pulse'),
