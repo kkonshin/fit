@@ -18,7 +18,7 @@ class BodyResource extends ModelResource
 {
     protected string $model = Body::class;
 
-    protected string $sortColumn = 'updated_at';
+    protected string $sortColumn = 'created_at';
 
     /**
      * @return list<class-string<PageContract>>
