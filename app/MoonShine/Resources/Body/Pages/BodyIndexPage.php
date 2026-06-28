@@ -32,8 +32,8 @@ class BodyIndexPage extends IndexPage
     protected function fields(): iterable
     {
         return [
-            ID::make(),
-            Date::make('Дата', 'created_at')
+            Date::make('Дата', 'updated_at')
+                ->sortable()
                 ->changePreview(fn ($date) => Carbon::parse($date)->isoFormat('D MMMM YYYY')),
             Number::make('Вес', 'weight'),
         ];
