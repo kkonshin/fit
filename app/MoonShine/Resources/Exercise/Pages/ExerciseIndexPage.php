@@ -34,10 +34,9 @@ class ExerciseIndexPage extends IndexPage
     protected function fields(): iterable
     {
         return [
-            ID::make(),
-            Preview::make('', 'created_at')
-                ->sortable()
-                ->changePreview(fn ($date) => Carbon::parse($date)->isoFormat('D MMMM YYYY')),
+            Preview::make('Дата', 'created_at')
+                ->changePreview(fn ($date) => Carbon::parse($date)->isoFormat('D MMMM YYYY'))
+                ->sortable(),
             Text::make('Активность', 'name')->sortable(),
             Number::make('Затраты калорий', 'calories')->sortable(),
             Number::make('Продолжительность', 'duration'),
