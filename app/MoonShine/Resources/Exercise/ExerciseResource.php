@@ -20,6 +20,8 @@ class ExerciseResource extends ModelResource
 
     protected string $title = 'Упражнения';
 
+    protected string $sortColumn = 'created_at';
+
     /**
      * @return list<class-string<PageContract>>
      */

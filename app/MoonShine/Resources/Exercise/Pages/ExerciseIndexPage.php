@@ -36,9 +36,10 @@ class ExerciseIndexPage extends IndexPage
         return [
             ID::make(),
             Preview::make('', 'created_at')
+                ->sortable()
                 ->changePreview(fn ($date) => Carbon::parse($date)->isoFormat('D MMMM YYYY')),
-            Text::make('Активность', 'name'),
-            Number::make('Затраты калорий', 'calories'),
+            Text::make('Активность', 'name')->sortable(),
+            Number::make('Затраты калорий', 'calories')->sortable(),
             Number::make('Продолжительность', 'duration'),
             Number::make('Средний пульс', 'pulse_avg'),
             Number::make('Максимальный пульс', 'pulse_max'),

@@ -15,7 +15,6 @@ use MoonShine\Support\ListOf;
 use MoonShine\UI\Components\Metrics\Wrapped\Metric;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Fields\Date;
-use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Number;
 use Throwable;
 
