@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources\Food\Pages;
 
+use App\MoonShine\Fields\FloatNumber;
 use App\MoonShine\Resources\Food\FoodResource;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\Pages\Crud\DetailPage;
 use MoonShine\UI\Components\Table\TableBuilder;
+use MoonShine\UI\Fields\Number;
 use MoonShine\UI\Fields\Text;
 use Throwable;
 
@@ -24,10 +26,10 @@ class FoodDetailPage extends DetailPage
     {
         return [
             Text::make('Название', 'name'),
-            Text::make('Калорийность на 100г', 'calories'),
-            Text::make('Белки', 'proteins'),
-            Text::make('Жиры', 'fats'),
-            Text::make('Углеводы', 'carbohydrates'),
+            Number::make('Калорийность на 100г', 'calories'),
+            FloatNumber::make('Белки', 'proteins'),
+            FloatNumber::make('Жиры', 'fats'),
+            FloatNumber::make('Углеводы', 'carbohydrates'),
         ];
     }
 

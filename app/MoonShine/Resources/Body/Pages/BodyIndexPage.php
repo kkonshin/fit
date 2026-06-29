@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources\Body\Pages;
 
+use App\MoonShine\Fields\FloatNumber;
 use App\MoonShine\Resources\Body\BodyResource;
 use Illuminate\Support\Carbon;
 use MoonShine\Contracts\UI\ActionButtonContract;
@@ -15,7 +16,6 @@ use MoonShine\Support\ListOf;
 use MoonShine\UI\Components\Metrics\Wrapped\Metric;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Fields\Date;
-use MoonShine\UI\Fields\Number;
 use Throwable;
 
 /**
@@ -34,7 +34,7 @@ class BodyIndexPage extends IndexPage
             Date::make('Дата', 'created_at')
                 ->changePreview(fn ($date) => Carbon::parse($date)->isoFormat('D MMMM YYYY'))
                 ->sortable(),
-            Number::make('Вес', 'weight'),
+            FloatNumber::make('Вес', 'weight'),
         ];
     }
 

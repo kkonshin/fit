@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\MoonShine\Resources\Body\Pages;
 
 use App\Models\Body;
+use App\MoonShine\Fields\FloatNumber;
 use App\MoonShine\Resources\Body\BodyResource;
 use App\MoonShine\Resources\Image\ImageResource;
 use Illuminate\Support\Carbon;
@@ -49,7 +50,7 @@ class BodyFormPage extends FormPage
                         ->default(Carbon::today()->toDateTimeString()),
                     Box::make('Параметры:', [
                         ID::make(),
-                        Number::make('Вес', 'weight')
+                        FloatNumber::make('Вес', 'weight')
                             ->default($previousWeight)
                             ->step(0.05)
                             ->buttons(),

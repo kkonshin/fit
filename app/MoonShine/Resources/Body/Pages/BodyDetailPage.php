@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources\Body\Pages;
 
+use App\MoonShine\Fields\FloatNumber;
 use App\MoonShine\Resources\Body\BodyResource;
 use App\MoonShine\Resources\Image\ImageResource;
 use Illuminate\Support\Carbon;
@@ -36,7 +37,7 @@ class BodyDetailPage extends DetailPage
         return [
             Preview::make('Дата', 'created_at')
                 ->changePreview(fn ($date) => Carbon::parse($date)->isoFormat('D MMMM YYYY')),
-            Number::make('Вес', 'weight'),
+            FloatNumber::make('Вес', 'weight'),
             Number::make('Пульс в покое', 'pulse'),
             Number::make('Шея', 'neck'),
             Number::make('Грудь', 'chest'),

@@ -16,6 +16,10 @@ class Body extends Model
 
     protected $guarded = ['id'];
 
+    protected $casts = [
+        'weight' => 'float',
+    ];
+
     /**
      * @return HasMany
      */

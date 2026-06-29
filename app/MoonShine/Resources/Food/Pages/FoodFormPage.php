@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources\Food\Pages;
 
+use App\MoonShine\Fields\FloatNumber;
 use App\MoonShine\Resources\Food\FoodResource;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ComponentContract;
@@ -13,6 +14,7 @@ use MoonShine\Laravel\Pages\Crud\FormPage;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Number;
 use MoonShine\UI\Fields\Text;
 use Throwable;
 
@@ -30,10 +32,10 @@ class FoodFormPage extends FormPage
             Box::make([
                 ID::make(),
                 Text::make('Название', 'name'),
-                Text::make('Калорийность', 'calories'),
-                Text::make('Белки', 'proteins'),
-                Text::make('Жиры', 'fats'),
-                Text::make('Углеводы', 'carbohydrates'),
+                Number::make('Калорийность', 'calories'),
+                FloatNumber::make('Белки', 'proteins')->step(0.1),
+                FloatNumber::make('Жиры', 'fats')->step(0.1),
+                FloatNumber::make('Углеводы', 'carbohydrates')->step(0.1),
             ]),
         ];
     }

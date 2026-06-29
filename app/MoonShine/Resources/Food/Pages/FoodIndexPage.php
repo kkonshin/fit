@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources\Food\Pages;
 
+use App\MoonShine\Fields\FloatNumber;
 use App\MoonShine\Resources\Food\FoodResource;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\ComponentContract;
@@ -15,6 +16,7 @@ use MoonShine\Support\ListOf;
 use MoonShine\UI\Components\Metrics\Wrapped\Metric;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Number;
 use MoonShine\UI\Fields\Text;
 use Throwable;
 
@@ -37,10 +39,10 @@ class FoodIndexPage extends IndexPage
                 )
             ),
             Text::make('Название', 'name')->sortable(),
-            Text::make('Калории на 100г', 'calories')->sortable(),
-            Text::make('Белки', 'proteins')->sortable(),
-            Text::make('Жиры', 'fats')->sortable(),
-            Text::make('Углеводы', 'carbohydrates')->sortable(),
+            Number::make('Калории на 100г', 'calories')->sortable(),
+            FloatNumber::make('Белки', 'proteins')->sortable(),
+            FloatNumber::make('Жиры', 'fats')->sortable(),
+            FloatNumber::make('Углеводы', 'carbohydrates')->sortable(),
         ];
     }
 
