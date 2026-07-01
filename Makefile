@@ -116,14 +116,14 @@ dump: ## Создание дампа БД
 	@echo -e "${FRMT_INVRS} Создание дампа БД... ${FRMT_NORM}"
 	DUMP_FILE="fit-$$(date +%F).dump"
 	echo "Файл дампа: $$DUMP_FILE"
-	docker compose exec -T db pg_dump -U laravel -d laravel -Fc --no-owner --no-privileges > "$$DUMP_FILE"
+	docker compose exec -T db sh -lc 'pg_dump -U "$$POSTGRES_USER" -d "$$POSTGRES_DB" -Fc --no-owner --no-privileges' > "$$DUMP_FILE"
 
 .PHONY: restore
 restore: ## Восстановление дампа БД
 	@echo -e "${FRMT_INVRS} Восстановление дампа БД... ${FRMT_NORM}"
 	shopt -s nullglob
 	set -- ./*.dump
-	if [ "$$1" = "./*.dump" ]; then
+	if [ "$$#" -eq 0 ]; then
 		echo "В корне проекта не найдено ни одного файла *.dump"
 		exit 1
 	fi
@@ -132,7 +132,7 @@ restore: ## Восстановление дампа БД
 	select DUMP_FILE in "$$@"; do
 		if [ -n "$$DUMP_FILE" ]; then
 			echo "Выбран дамп: $$DUMP_FILE"
-			docker compose exec -T db pg_restore -U webdev -d laravel --clean --if-exists --no-owner --no-privileges < "$$DUMP_FILE"
+			docker compose exec -T db sh -lc 'pg_restore -U "$$POSTGRES_USER" -d "$$POSTGRES_DB" --clean --if-exists --no-owner --no-privileges' < "$$DUMP_FILE"
 			break
 		fi
 		echo "Некорректный выбор. Попробуйте снова."
