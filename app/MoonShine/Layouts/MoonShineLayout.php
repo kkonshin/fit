@@ -6,6 +6,7 @@ namespace App\MoonShine\Layouts;
 
 use App\MoonShine\Resources\Body\BodyResource;
 use App\MoonShine\Resources\Exercise\ExerciseResource;
+use App\MoonShine\Resources\Expense\ExpenseResource;
 use App\MoonShine\Resources\Food\FoodResource;
 use App\MoonShine\Resources\Goal\GoalResource;
 use App\MoonShine\Resources\Image\ImageResource;
@@ -13,6 +14,7 @@ use MoonShine\ColorManager\ColorManager;
 use MoonShine\ColorManager\Palettes\PurplePalette;
 use MoonShine\Contracts\ColorManager\ColorManagerContract;
 use MoonShine\Contracts\ColorManager\PaletteContract;
+use MoonShine\Contracts\MenuManager\MenuElementContract;
 use MoonShine\Laravel\Layouts\AppLayout;
 use MoonShine\MenuManager\MenuItem;
 
@@ -23,13 +25,19 @@ final class MoonShineLayout extends AppLayout
      */
     protected ?string $palette = PurplePalette::class;
 
+    protected bool $mobileMode = true;
+
     protected function assets(): array
     {
         return [
             ...parent::assets(),
+            // Css::make(Vite::asset('resources/css/moonshine.css')),
         ];
     }
 
+    /**
+     * @return array|MenuElementContract[]
+     */
     protected function menu(): array
     {
         return [
@@ -38,6 +46,7 @@ final class MoonShineLayout extends AppLayout
             MenuItem::make(ImageResource::class, 'Фотографии')->icon('photo'),
             MenuItem::make(ExerciseResource::class, 'Упражнения')->icon('fire'),
             MenuItem::make(GoalResource::class, 'Цели')->icon('trophy'),
+            MenuItem::make(ExpenseResource::class, 'Платежи')->icon('currency-dollar'),
             ...parent::menu(),
         ];
     }

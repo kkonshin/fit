@@ -14,6 +14,7 @@ use Illuminate\Support\ServiceProvider;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Laravel\DependencyInjection\MoonShineConfigurator;
 use App\MoonShine\Resources\Goal\GoalResource;
+use App\MoonShine\Resources\Expense\ExpenseResource;
 
 class MoonShineServiceProvider extends ServiceProvider
 {
@@ -31,6 +32,7 @@ class MoonShineServiceProvider extends ServiceProvider
                 ImageResource::class,
                 ExerciseResource::class,
                 GoalResource::class,
+                ExpenseResource::class,
             ])
             ->pages([
                 ...$core->getConfig()->getPages(),

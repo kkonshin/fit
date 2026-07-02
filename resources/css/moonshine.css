@@ -1,0 +1,22 @@
+@media (max-width: 768px) {
+    html {
+        font-size: 18px;
+    }
+
+    body {
+        font-size: 1rem;
+    }
+
+    input,
+    select,
+    textarea,
+    button {
+        font-size: 16px;
+    }
+
+    table,
+    .table,
+    .text-sm {
+        font-size: 1rem;
+    }
+}
