@@ -18,7 +18,7 @@ class GoalResource extends ModelResource
 {
     protected string $model = Goal::class;
 
-    protected string $title = 'Goals';
+    protected string $title = 'Цели';
 
     /**
      * @return list<class-string<PageContract>>

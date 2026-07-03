@@ -9,7 +9,11 @@ use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\Pages\Crud\DetailPage;
 use MoonShine\UI\Components\Table\TableBuilder;
+use MoonShine\UI\Fields\Date;
 use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Json;
+use MoonShine\UI\Fields\Number;
+use MoonShine\UI\Fields\Text;
 use Throwable;
 
 /**
@@ -23,7 +27,19 @@ class GoalDetailPage extends DetailPage
     protected function fields(): iterable
     {
         return [
-            ID::make(),
+            Text::make('Цель', 'name'),
+            Json::make('Параметры', 'parameters')->fields([
+                Text::make('Вид активности', 'activity_type'),
+                Number::make('Расстояние, км', 'distance'),
+                Number::make('Средняя скорость, км/ч', 'average_speed'),
+                Number::make('Максимальная скорость, км/ч', 'max_speed'),
+                Number::make('Средний пульс', 'average_pulse'),
+                Number::make('Вес, кг', 'weight'),
+            ]),
+            Date::make('Достигнуть к', 'to_be_achieved_to'),
+            Date::make('Достигнута', 'achieved_at'),
+            Date::make('Создана', 'created_at'),
+            Date::make('Обновлена', 'updated_at'),
         ];
     }
 

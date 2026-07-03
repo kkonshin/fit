@@ -11,5 +11,8 @@ class Goal extends Model
     protected $casts = [
         'parameters' => 'array',
         'achieved_at' => 'date',
+        'to_be_achieved_to' => 'date',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 }
