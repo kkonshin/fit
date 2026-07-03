@@ -37,7 +37,7 @@ class GoalIndexPage extends IndexPage
             Date::make('Достигнута', 'achieved_at')
                 ->changePreview(fn ($date) => isset($date)
                     ? Carbon::parse($date)->isoFormat('D MMMM YYYY')
-                    : null
+                    : 'в процессе'
                 ),
         ];
     }

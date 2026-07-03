@@ -12,7 +12,10 @@ use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Laravel\Pages\Crud\FormPage;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Fields\Date;
 use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Number;
+use MoonShine\UI\Fields\Text;
 use Throwable;
 
 /**
@@ -28,18 +31,22 @@ class ExpenseFormPage extends FormPage
         return [
             Box::make([
                 ID::make(),
+                Text::make('Расход', 'name'),
+                Number::make('Сумма', 'amount'),
+                Date::make('Оплатить к', 'due_date'),
+                Date::make('Оплачено', 'paid_at'),
             ]),
         ];
     }
 
     /**
-     * @param DataWrapperContract $item
      * @return array[]
      */
     protected function rules(DataWrapperContract $item): array
     {
         return [
-            'amount' => ['required', 'numeric', 'decimal:2'],
+            'name' => ['required', 'string', 'max:100'],
+            'amount' => ['required', 'numeric', 'min:0'],
         ];
     }
 

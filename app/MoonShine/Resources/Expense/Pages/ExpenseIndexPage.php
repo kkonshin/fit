@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\MoonShine\Resources\Expense\Pages;
 
 use App\MoonShine\Resources\Expense\ExpenseResource;
+use Illuminate\Support\Carbon;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
@@ -13,7 +14,9 @@ use MoonShine\Laravel\QueryTags\QueryTag;
 use MoonShine\Support\ListOf;
 use MoonShine\UI\Components\Metrics\Wrapped\Metric;
 use MoonShine\UI\Components\Table\TableBuilder;
+use MoonShine\UI\Fields\Date;
 use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Number;
 use MoonShine\UI\Fields\Text;
 use Throwable;
 
@@ -31,7 +34,12 @@ class ExpenseIndexPage extends IndexPage
     {
         return [
             ID::make(),
-            Text::make('Платеж'),
+            Text::make('Платеж', 'name'),
+            Number::make('Сумма', 'amount'),
+            Date::make('Оплатить к', 'due_date')
+                ->changePreview(fn ($date) => Carbon::parse($date)->ISOFormat('D MMMM YYYY')),
+            Date::make('Оплачено', 'paid_at')
+                ->changePreview(fn ($date) => Carbon::parse($date)->isoFormat('D MMMM YYYY')),
         ];
     }
 

@@ -10,7 +10,6 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\Pages\Crud\DetailPage;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Fields\Date;
-use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Json;
 use MoonShine\UI\Fields\Number;
 use MoonShine\UI\Fields\Text;

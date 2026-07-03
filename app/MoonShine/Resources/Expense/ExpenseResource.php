@@ -18,7 +18,7 @@ class ExpenseResource extends ModelResource
 {
     protected string $model = Expense::class;
 
-    protected string $title = 'Расходы';
+    protected string $title = 'Платежи';
 
     /**
      * @return list<class-string<PageContract>>
