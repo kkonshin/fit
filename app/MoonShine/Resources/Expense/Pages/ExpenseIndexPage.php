@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources\Expense\Pages;
 
+use App\MoonShine\Fields\FloatNumber;
 use App\MoonShine\Resources\Expense\ExpenseResource;
 use Illuminate\Support\Carbon;
 use MoonShine\Contracts\UI\ActionButtonContract;
@@ -16,7 +17,6 @@ use MoonShine\UI\Components\Metrics\Wrapped\Metric;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Fields\Date;
 use MoonShine\UI\Fields\ID;
-use MoonShine\UI\Fields\Number;
 use MoonShine\UI\Fields\Text;
 use Throwable;
 
@@ -35,7 +35,7 @@ class ExpenseIndexPage extends IndexPage
         return [
             ID::make(),
             Text::make('Платеж', 'name'),
-            Number::make('Сумма', 'amount'),
+            FloatNumber::make('Сумма', 'amount'),
             Date::make('Оплатить к', 'due_date')
                 ->changePreview(fn ($date) => Carbon::parse($date)->ISOFormat('D MMMM YYYY')),
             Date::make('Оплачено', 'paid_at')

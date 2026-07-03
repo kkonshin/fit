@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources\Expense\Pages;
 
+use App\MoonShine\Fields\FloatNumber;
 use App\MoonShine\Resources\Expense\ExpenseResource;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ComponentContract;
@@ -14,7 +15,6 @@ use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\Date;
 use MoonShine\UI\Fields\ID;
-use MoonShine\UI\Fields\Number;
 use MoonShine\UI\Fields\Text;
 use Throwable;
 
@@ -32,7 +32,7 @@ class ExpenseFormPage extends FormPage
             Box::make([
                 ID::make(),
                 Text::make('Расход', 'name'),
-                Number::make('Сумма', 'amount'),
+                FloatNumber::make('Сумма', 'amount'),
                 Date::make('Оплатить к', 'due_date'),
                 Date::make('Оплачено', 'paid_at'),
             ]),
