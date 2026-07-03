@@ -42,11 +42,12 @@ final class MoonShineLayout extends AppLayout
     {
         return [
             MenuItem::make(BodyResource::class, 'Параметры тела')->icon('user'),
-            MenuItem::make(FoodResource::class, 'Продукты')->icon('cake'),
-            MenuItem::make(ImageResource::class, 'Фотографии')->icon('photo'),
             MenuItem::make(ExerciseResource::class, 'Упражнения')->icon('fire'),
             MenuItem::make(GoalResource::class, 'Цели')->icon('trophy'),
             MenuItem::make(ExpenseResource::class, 'Платежи')->icon('currency-dollar'),
+            MenuItem::make(FoodResource::class, 'Продукты')->icon('cake'),
+            MenuItem::make(ImageResource::class, 'Фотографии')->icon('photo'),
+
             ...parent::menu(),
         ];
     }
