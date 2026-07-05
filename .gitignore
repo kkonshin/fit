@@ -32,3 +32,4 @@ yarn-error.log
 /.config/psysh/psysh_history
 .bash_history
 /*.dump
+/phpstan.log
