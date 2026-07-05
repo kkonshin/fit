@@ -22,35 +22,29 @@ install: ## Установка проекта
 	@while [ -z "$$CONTINUE" ]; do \
 		read -r -p "Вы настроили файл .env? [y/N]: " CONTINUE; \
 	done; [ $$CONTINUE = "y" ] || [ $$CONTINUE = "Y" ] || (echo "Отменено!"; exit 1;)
-	make metrics_network
 	docker compose run --rm node ci && make frontend-build
 	make restore
 	make build && docker compose up -d --wait
-
 
 .PHONY: up
 up: ## Запустить сервер
 	@echo -e "${FRMT_INVRS} Запуск сервера... ${FRMT_NORM}"
 	docker compose up -d
 
-
 .PHONY: down
 down: ## Остановить сервер
 	@echo -e "${FRMT_INVRS} Остановка сервера... ${FRMT_NORM}"
 	docker compose down --remove-orphans
-
 
 .PHONY: console
 console: ## Открыть консоль сервера
 	@echo -e "${FRMT_INVRS} Открытие консоли сервера... ${FRMT_NORM}"
 	docker compose exec app bash
 
-
 .PHONY: build
 build: ## Собрать проект
 	@echo -e "${FRMT_INVRS} Сборка проекта... ${FRMT_NORM}"
 	docker compose build
-
 
 .PHONY: update
 update: ## Обновить проект
@@ -65,12 +59,10 @@ update: ## Обновить проект
 	docker compose exec app bash -c 'php artisan migrate'
 	docker compose exec app bash -c 'php artisan queue:restart'
 
-
 .PHONY: deploy
 deploy: ## Деплой проекта
 	@echo -e "${FRMT_INVRS} Деплой проекта... ${FRMT_NORM}"
 	git pull
-	make env
 	make build
 	make frontend-build
 	make up
