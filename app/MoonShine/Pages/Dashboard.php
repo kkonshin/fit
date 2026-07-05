@@ -6,6 +6,7 @@ namespace App\MoonShine\Pages;
 
 use App\Models\Body;
 use App\Models\Exercise;
+use Illuminate\Support\Arr;
 use MoonShine\Apexcharts\Components\LineChartMetric;
 use MoonShine\Apexcharts\Support\SeriesItem;
 use MoonShine\Contracts\UI\ComponentContract;
@@ -19,6 +20,8 @@ use MoonShine\UI\Components\Metrics\Wrapped\ValueMetric;
 #[SkipMenu]
 class Dashboard extends Page
 {
+    private const int FREQUENCY = 3;
+
     /**
      * @return array<string, string>
      */
@@ -39,8 +42,21 @@ class Dashboard extends Page
      */
     protected function components(): iterable
     {
+        $series = Arr::flatten(
+            Body::query()
+                ->fromRaw(
+                    'GENERATE_SERIES((SELECT MIN(id) FROM body), (SELECT MAX(id) FROM body), ?)
+                     as gs(thirds);',
+                    [self::FREQUENCY]
+                )
+                ->selectRaw('thirds')
+                ->get()
+                ->toArray()
+        );
+
         $weights = Body::query()
             ->select(['weight', 'created_at'])
+            ->whereIn('id', $series)
             ->get()
             ->mapWithKeys(function ($weight) {
                 return [
@@ -54,11 +70,15 @@ class Dashboard extends Page
                 Column::make([
                     Box::make([
                         ValueMetric::make('Затраты калорий вчера')
-                            ->value(static fn (): int => Exercise::createdYesterday()->get()
+                            ->value(static fn (): int => Exercise::query()
+                                ->createdYesterday()
+                                ->get()
                                 ->sum('calories'))
                             ->progress(500),
                         ValueMetric::make('Затраты калорий сегодня')
-                            ->value(static fn (): int => Exercise::createdToday()->get()
+                            ->value(static fn (): int => Exercise::query()
+                                ->createdToday()
+                                ->get()
                                 ->sum('calories'))
                             ->progress(500),
                     ]),

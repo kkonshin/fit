@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources\Food;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Food;
-use App\MoonShine\Resources\Food\Pages\FoodIndexPage;
-use App\MoonShine\Resources\Food\Pages\FoodFormPage;
 use App\MoonShine\Resources\Food\Pages\FoodDetailPage;
-
-use MoonShine\Laravel\Resources\ModelResource;
+use App\MoonShine\Resources\Food\Pages\FoodFormPage;
+use App\MoonShine\Resources\Food\Pages\FoodIndexPage;
 use MoonShine\Contracts\Core\PageContract;
+use MoonShine\Laravel\Resources\ModelResource;
 
 /**
  * @extends ModelResource<Food, FoodIndexPage, FoodFormPage, FoodDetailPage>
