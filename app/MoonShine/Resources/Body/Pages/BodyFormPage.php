@@ -85,9 +85,26 @@ class BodyFormPage extends FormPage
         ];
     }
 
+    /**
+     * @return array[]
+     */
     protected function rules(DataWrapperContract $item): array
     {
-        return [];
+        return [
+            'created_at' => ['required', 'date'],
+            'weight' => ['nullable', 'numeric', 'min:0', 'max:250'],
+            'pulse' => ['nullable', 'numeric', 'min:0', 'max:200'],
+            'neck' => ['nullable', 'numeric', 'min:0', 'max:90'],
+            'chest' => ['nullable', 'numeric', 'min:0', 'max:90'],
+            'waist' => ['nullable', 'numeric', 'min:0', 'max:90'],
+            'abdomen' => ['nullable', 'numeric', 'min:0', 'max:90'],
+            'bicep' => ['nullable', 'numeric', 'min:0', 'max:90'],
+            'wrist' => ['nullable', 'numeric', 'min:0', 'max:90'],
+            'hips' => ['nullable', 'numeric', 'min:0', 'max:90'],
+            'hip' => ['nullable', 'numeric', 'min:0', 'max:90'],
+            'shin' => ['nullable', 'numeric', 'min:0', 'max:90'],
+            'ankle' => ['nullable', 'numeric', 'min:0', 'max:90'],
+        ];
     }
 
     /**
