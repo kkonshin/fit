@@ -12,7 +12,9 @@ use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Laravel\QueryTags\QueryTag;
+use MoonShine\Support\Enums\Color;
 use MoonShine\Support\ListOf;
+use MoonShine\UI\Components\Badge;
 use MoonShine\UI\Components\Metrics\Wrapped\Metric;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Fields\Date;
@@ -39,7 +41,10 @@ class ExpenseIndexPage extends IndexPage
             Date::make('Оплатить к', 'due_date')
                 ->changePreview(fn ($date) => Carbon::parse($date)->ISOFormat('D MMMM YYYY')),
             Date::make('Оплачено', 'paid_at')
-                ->changePreview(fn ($date) => Carbon::parse($date)->isoFormat('D MMMM YYYY')),
+                ->changePreview(fn ($date) => isset($date)
+                    ? Carbon::parse($date)->isoFormat('D MMMM YYYY')
+                    : Badge::make('Требуется оплата', Color::RED)
+                        ->render()),
         ];
     }
 
