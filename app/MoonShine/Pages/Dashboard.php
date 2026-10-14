@@ -6,7 +6,6 @@ namespace App\MoonShine\Pages;
 
 use App\Models\Body;
 use App\Models\Exercise;
-use Illuminate\Support\Arr;
 use MoonShine\Apexcharts\Components\LineChartMetric;
 use MoonShine\Apexcharts\Support\SeriesItem;
 use MoonShine\Contracts\UI\ComponentContract;
@@ -20,8 +19,6 @@ use MoonShine\UI\Components\Metrics\Wrapped\ValueMetric;
 #[SkipMenu]
 class Dashboard extends Page
 {
-    private const int FREQUENCY = 7;
-
     /**
      * @return array<string, string>
      */
@@ -39,30 +36,24 @@ class Dashboard extends Page
 
     /**
      * @return list<ComponentContract>
+     * @noinspection LaravelSimplifyOrderBy
      */
     protected function components(): iterable
     {
-        $series = Arr::flatten(
-            Body::query()
-                ->fromRaw(
-                    'GENERATE_SERIES((SELECT MIN(id) FROM body), (SELECT MAX(id) FROM body), ?)
-                     as gs(frequency);',
-                    [self::FREQUENCY]
-                )
-                ->selectRaw('frequency')
-                ->get()
-                ->toArray()
-        );
+        $now = now();
+        $sixMonthsAgo = $now->copy()->startOfMonth()->subMonths(5);
 
         $weights = Body::query()
             ->select(['weight', 'created_at'])
-            ->whereIn('id', $series)
+            ->whereNotNull('weight')
+            ->whereBetween('created_at', [$sixMonthsAgo, $now])
+            ->orderBy('created_at')
             ->get()
-            ->mapWithKeys(function ($weight) {
-                return [
-                    $weight->created_at->format('Y-m-d') => $weight->weight,
-                ];
-            })
+            ->groupBy(fn (Body $body): string => $body->created_at->format('Y-m'))
+            ->map(fn ($bodies) => $bodies->first())
+            ->mapWithKeys(fn (Body $body): array => [
+                $body->created_at->format('Y-m-d') => $body->weight,
+            ])
             ->toArray();
 
         return [
