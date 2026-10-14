@@ -7,7 +7,6 @@ namespace App\MoonShine\Layouts;
 use App\MoonShine\Resources\Body\BodyResource;
 use App\MoonShine\Resources\Exercise\ExerciseResource;
 use App\MoonShine\Resources\Expense\ExpenseResource;
-use App\MoonShine\Resources\Food\FoodResource;
 use App\MoonShine\Resources\Goal\GoalResource;
 use App\MoonShine\Resources\Image\ImageResource;
 use MoonShine\ColorManager\ColorManager;
@@ -45,7 +44,6 @@ final class MoonShineLayout extends AppLayout
             MenuItem::make(ExerciseResource::class, 'Упражнения')->icon('fire'),
             MenuItem::make(GoalResource::class, 'Цели')->icon('trophy'),
             MenuItem::make(ExpenseResource::class, 'Платежи')->icon('currency-dollar'),
-            MenuItem::make(FoodResource::class, 'Продукты')->icon('cake'),
             MenuItem::make(ImageResource::class, 'Фотографии')->icon('photo'),
 
             ...parent::menu(),
