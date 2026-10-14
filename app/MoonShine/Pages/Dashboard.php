@@ -20,7 +20,7 @@ use MoonShine\UI\Components\Metrics\Wrapped\ValueMetric;
 #[SkipMenu]
 class Dashboard extends Page
 {
-    private const int FREQUENCY = 3;
+    private const int FREQUENCY = 7;
 
     /**
      * @return array<string, string>
@@ -46,14 +46,14 @@ class Dashboard extends Page
             Body::query()
                 ->fromRaw(
                     'GENERATE_SERIES((SELECT MIN(id) FROM body), (SELECT MAX(id) FROM body), ?)
-                     as gs(thirds);',
+                     as gs(frequency);',
                     [self::FREQUENCY]
                 )
-                ->selectRaw('thirds')
+                ->selectRaw('frequency')
                 ->get()
                 ->toArray()
         );
-        // TODO всегда включать текущий день
+
         $weights = Body::query()
             ->select(['weight', 'created_at'])
             ->whereIn('id', $series)
