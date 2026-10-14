@@ -19,6 +19,7 @@ use MoonShine\UI\Components\Metrics\Wrapped\Metric;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Fields\Date;
 use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Number;
 use MoonShine\UI\Fields\Text;
 use Throwable;
 
@@ -38,6 +39,8 @@ class ExpenseIndexPage extends IndexPage
             ID::make(),
             Text::make('Платеж', 'name'),
             FloatNumber::make('Сумма', 'amount'),
+            Number::make('Кол-во оплаченных', 'quantity_bought'),
+            Number::make('Кол-во использованных', 'quantity_used'),
             Date::make('Оплатить', 'due_date')
                 ->changePreview(fn ($date) => Carbon::parse($date)->ISOFormat('D MMMM YYYY')),
             Date::make('Оплачено', 'paid_at')

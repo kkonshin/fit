@@ -15,6 +15,7 @@ use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\Date;
 use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Number;
 use MoonShine\UI\Fields\Text;
 use Throwable;
 
@@ -33,6 +34,8 @@ class ExpenseFormPage extends FormPage
                 ID::make(),
                 Text::make('Расход', 'name'),
                 FloatNumber::make('Сумма', 'amount'),
+                Number::make('Кол-во оплаченных', 'quantity_bought'),
+                Number::make('Кол-во использованных', 'quantity_used')->readonly(),
                 Date::make('Оплатить к', 'due_date'),
                 Date::make('Оплачено', 'paid_at'),
             ]),
@@ -47,6 +50,8 @@ class ExpenseFormPage extends FormPage
         return [
             'name' => ['required', 'string', 'max:100'],
             'amount' => ['required', 'numeric', 'min:0'],
+            'quantity_bought' => ['nullable', 'integer', 'min:0'],
+            'quantity_used' => ['nullable', 'integer', 'min:0'],
         ];
     }
 
