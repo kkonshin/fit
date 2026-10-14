@@ -6,11 +6,14 @@ namespace App\MoonShine\Pages;
 
 use App\Models\Body;
 use App\Models\Exercise;
+use App\Models\Expense;
 use MoonShine\Apexcharts\Components\LineChartMetric;
 use MoonShine\Apexcharts\Support\SeriesItem;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Laravel\Pages\Page;
 use MoonShine\MenuManager\Attributes\SkipMenu;
+use MoonShine\Support\Enums\Color;
+use MoonShine\UI\Components\Alert;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Components\Layout\Column;
 use MoonShine\UI\Components\Layout\Grid;
@@ -36,6 +39,7 @@ class Dashboard extends Page
 
     /**
      * @return list<ComponentContract>
+     *
      * @noinspection LaravelSimplifyOrderBy
      */
     protected function components(): iterable
@@ -56,10 +60,31 @@ class Dashboard extends Page
             ])
             ->toArray();
 
+        $lastPaidExpense = Expense::query()
+            ->whereNotNull('paid_at')
+            ->latest('paid_at')
+            ->first();
+        $quantityBought = $lastPaidExpense?->getRawOriginal('quantity_bought');
+        $quantityUsed = $lastPaidExpense?->quantity_used ?? 0;
+        $quantityRemaining = $quantityBought === null
+            ? 0
+            : max(0, (int) $quantityBought - $quantityUsed);
+        $quantityRemainingMetric = ValueMetric::make('Осталось оплаченных занятий')
+            ->value($quantityRemaining);
+
+        if ($quantityRemaining === 1) {
+            $quantityRemainingMetric->iconColor(Color::RED);
+        }
+
         return [
             Grid::make([
                 Column::make([
                     Box::make([
+                        $quantityRemainingMetric,
+                        ...($quantityRemaining === 1
+                            ? [Alert::make('bell-alert', Color::RED)
+                                ->content('Требуется оплата!')]
+                            : []),
                         ValueMetric::make('Затраты калорий вчера')
                             ->value(static fn (): int => Exercise::query()
                                 ->createdYesterday()
