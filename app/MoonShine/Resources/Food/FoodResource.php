@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\MoonShine\Resources\Food;
 
 use App\Models\Food;
+use App\MoonShine\Resources\Concerns\RedirectAfterSaveToIndex;
 use App\MoonShine\Resources\Food\Pages\FoodDetailPage;
 use App\MoonShine\Resources\Food\Pages\FoodFormPage;
 use App\MoonShine\Resources\Food\Pages\FoodIndexPage;
@@ -16,6 +17,8 @@ use MoonShine\Laravel\Resources\ModelResource;
  */
 class FoodResource extends ModelResource
 {
+    use RedirectAfterSaveToIndex;
+
     protected string $model = Food::class;
 
     protected string $title = 'Продукты';

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\MoonShine\Resources\Image;
 
 use App\Models\Image;
+use App\MoonShine\Resources\Concerns\RedirectAfterSaveToIndex;
 use App\MoonShine\Resources\Image\Pages\ImageDetailPage;
 use App\MoonShine\Resources\Image\Pages\ImageFormPage;
 use App\MoonShine\Resources\Image\Pages\ImageIndexPage;
@@ -16,6 +17,8 @@ use MoonShine\Laravel\Resources\ModelResource;
  */
 class ImageResource extends ModelResource
 {
+    use RedirectAfterSaveToIndex;
+
     protected string $model = Image::class;
 
     protected string $title = 'Фотографии';

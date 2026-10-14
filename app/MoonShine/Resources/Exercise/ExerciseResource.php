@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\MoonShine\Resources\Exercise;
 
 use App\Models\Exercise;
+use App\MoonShine\Resources\Concerns\RedirectAfterSaveToIndex;
 use App\MoonShine\Resources\Exercise\Pages\ExerciseDetailPage;
 use App\MoonShine\Resources\Exercise\Pages\ExerciseFormPage;
 use App\MoonShine\Resources\Exercise\Pages\ExerciseIndexPage;
@@ -16,6 +17,8 @@ use MoonShine\Laravel\Resources\ModelResource;
  */
 class ExerciseResource extends ModelResource
 {
+    use RedirectAfterSaveToIndex;
+
     protected string $model = Exercise::class;
 
     protected string $title = 'Упражнения';

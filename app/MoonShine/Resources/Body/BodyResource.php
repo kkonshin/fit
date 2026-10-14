@@ -8,6 +8,7 @@ use App\Models\Body;
 use App\MoonShine\Resources\Body\Pages\BodyDetailPage;
 use App\MoonShine\Resources\Body\Pages\BodyFormPage;
 use App\MoonShine\Resources\Body\Pages\BodyIndexPage;
+use App\MoonShine\Resources\Concerns\RedirectAfterSaveToIndex;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Laravel\Resources\ModelResource;
 
@@ -16,6 +17,8 @@ use MoonShine\Laravel\Resources\ModelResource;
  */
 class BodyResource extends ModelResource
 {
+    use RedirectAfterSaveToIndex;
+
     protected string $model = Body::class;
 
     protected string $sortColumn = 'created_at';

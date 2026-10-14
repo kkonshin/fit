@@ -38,7 +38,7 @@ class ExpenseIndexPage extends IndexPage
             ID::make(),
             Text::make('Платеж', 'name'),
             FloatNumber::make('Сумма', 'amount'),
-            Date::make('Оплатить к', 'due_date')
+            Date::make('Оплатить', 'due_date')
                 ->changePreview(fn ($date) => Carbon::parse($date)->ISOFormat('D MMMM YYYY')),
             Date::make('Оплачено', 'paid_at')
                 ->changePreview(fn ($date) => isset($date)

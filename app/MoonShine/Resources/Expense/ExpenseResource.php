@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\MoonShine\Resources\Expense;
 
 use App\Models\Expense;
+use App\MoonShine\Resources\Concerns\RedirectAfterSaveToIndex;
 use App\MoonShine\Resources\Expense\Pages\ExpenseDetailPage;
 use App\MoonShine\Resources\Expense\Pages\ExpenseFormPage;
 use App\MoonShine\Resources\Expense\Pages\ExpenseIndexPage;
@@ -16,6 +17,8 @@ use MoonShine\Laravel\Resources\ModelResource;
  */
 class ExpenseResource extends ModelResource
 {
+    use RedirectAfterSaveToIndex;
+
     protected string $model = Expense::class;
 
     protected string $title = 'Платежи';

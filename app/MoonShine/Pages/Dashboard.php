@@ -53,7 +53,7 @@ class Dashboard extends Page
                 ->get()
                 ->toArray()
         );
-
+        // TODO всегда включать текущий день
         $weights = Body::query()
             ->select(['weight', 'created_at'])
             ->whereIn('id', $series)
