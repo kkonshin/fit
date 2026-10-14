@@ -41,8 +41,6 @@ class ExpenseIndexPage extends IndexPage
             FloatNumber::make('Сумма', 'amount'),
             Number::make('Кол-во оплаченных', 'quantity_bought'),
             Number::make('Кол-во использованных', 'quantity_used'),
-            Date::make('Оплатить', 'due_date')
-                ->changePreview(fn ($date) => Carbon::parse($date)->ISOFormat('D MMMM YYYY')),
             Date::make('Оплачено', 'paid_at')
                 ->changePreview(fn ($date) => isset($date)
                     ? Carbon::parse($date)->isoFormat('D MMMM YYYY')

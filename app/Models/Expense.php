@@ -11,10 +11,13 @@ class Expense extends Model
 
     protected $casts = [
         'amount' => 'decimal:2',
-        'due_date' => 'date',
         'paid_at' => 'datetime',
     ];
 
+    /**
+     * @noinspection PhpUnused
+     * @noinspection LaravelSimplifyOrderBy
+     */
     public function getQuantityUsedAttribute(mixed $value): ?int
     {
         $paidAt = $this->getRawOriginal('paid_at');

@@ -28,8 +28,6 @@ class ExpenseDetailPage extends DetailPage
         return [
             Text::make('Платеж', 'name'),
             FloatNumber::make('Сумма', 'amount'),
-            Date::make('Оплатить к', 'due_date')
-                ->changePreview(fn ($date) => Carbon::parse($date)->ISOFormat('D MMMM YYYY')),
             Date::make('Оплачено', 'paid_at')
                 ->changePreview(fn ($date) => Carbon::parse($date)->isoFormat('D MMMM YYYY')),
         ];

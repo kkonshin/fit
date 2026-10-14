@@ -36,7 +36,6 @@ class ExpenseFormPage extends FormPage
                 FloatNumber::make('Сумма', 'amount'),
                 Number::make('Кол-во оплаченных', 'quantity_bought'),
                 Number::make('Кол-во использованных', 'quantity_used')->readonly(),
-                Date::make('Оплатить к', 'due_date'),
                 Date::make('Оплачено', 'paid_at'),
             ]),
         ];
