@@ -7,12 +7,15 @@ namespace App\MoonShine\Pages;
 use App\Models\Body;
 use App\Models\Exercise;
 use App\Models\Expense;
+use App\MoonShine\Resources\Body\BodyResource;
+use App\MoonShine\Resources\Exercise\ExerciseResource;
 use MoonShine\Apexcharts\Components\LineChartMetric;
 use MoonShine\Apexcharts\Support\SeriesItem;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Laravel\Pages\Page;
 use MoonShine\MenuManager\Attributes\SkipMenu;
 use MoonShine\Support\Enums\Color;
+use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Alert;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Components\Layout\Column;
@@ -83,6 +86,20 @@ class Dashboard extends Page
             ->first();
 
         return [
+            Grid::make([
+                Column::make([
+                    ActionButton::make(
+                        'Создать упражнение',
+                        app(ExerciseResource::class)->getFormPageUrl()
+                    )->primary(),
+                ], 6),
+                Column::make([
+                    ActionButton::make(
+                        'Добавить параметры тела',
+                        app(BodyResource::class)->getFormPageUrl()
+                    )->primary(),
+                ], 6),
+            ]),
             Grid::make([
                 Column::make([
                     Box::make([
