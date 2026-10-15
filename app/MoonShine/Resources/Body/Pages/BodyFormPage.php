@@ -57,13 +57,15 @@ class BodyFormPage extends FormPage
                             ->default($previousBody?->pulse),
                         Number::make('Шея', 'neck')
                             ->default($previousBody?->neck),
+                        Number::make('Плечи', 'shoulders')
+                            ->default($previousBody?->shoulders),
                         Number::make('Грудь', 'chest')
                             ->default($previousBody?->chest),
                         Number::make('Талия', 'waist')
                             ->default($previousBody?->waist),
                         Number::make('Живот', 'abdomen')
                             ->default($previousBody?->abdomen),
-                        Number::make('Предплечье', 'bicep')
+                        Number::make('Бицепс', 'bicep')
                             ->default($previousBody?->bicep),
                         Number::make('Запястье', 'wrist')
                             ->default($previousBody?->wrist),
@@ -104,6 +106,7 @@ class BodyFormPage extends FormPage
             'weight' => ['nullable', 'numeric', 'min:0', 'max:250'],
             'pulse' => ['nullable', 'numeric', 'min:0', 'max:200'],
             'neck' => ['nullable', 'numeric', 'min:0', 'max:255'],
+            'shoulders' => ['nullable', 'numeric', 'min:0', 'max:255'],
             'chest' => ['nullable', 'numeric', 'min:0', 'max:255'],
             'waist' => ['nullable', 'numeric', 'min:0', 'max:255'],
             'abdomen' => ['nullable', 'numeric', 'min:0', 'max:255'],
