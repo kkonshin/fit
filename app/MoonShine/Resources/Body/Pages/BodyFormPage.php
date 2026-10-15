@@ -113,6 +113,8 @@ class BodyFormPage extends FormPage
             'hip' => ['nullable', 'numeric', 'min:0', 'max:255'],
             'shin' => ['nullable', 'numeric', 'min:0', 'max:255'],
             'ankle' => ['nullable', 'numeric', 'min:0', 'max:255'],
+            'images' => ['nullable', 'array'],
+            'images.*.path' => ['nullable', 'file', 'image', 'max:10240'],
         ];
     }
 
