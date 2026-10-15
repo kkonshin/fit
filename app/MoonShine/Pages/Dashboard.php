@@ -64,6 +64,7 @@ class Dashboard extends Page
             ->whereNotNull('paid_at')
             ->latest('paid_at')
             ->first();
+
         $quantityBought = $lastPaidExpense?->getRawOriginal('quantity_bought');
         $quantityUsed = $lastPaidExpense?->quantity_used ?? 0;
         $quantityRemaining = $quantityBought === null
