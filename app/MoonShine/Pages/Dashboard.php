@@ -22,6 +22,8 @@ use MoonShine\UI\Components\Layout\Column;
 use MoonShine\UI\Components\Layout\Grid;
 use MoonShine\UI\Components\Metrics\Wrapped\ValueMetric;
 
+use function sprintf;
+
 #[SkipMenu]
 class Dashboard extends Page
 {
@@ -80,10 +82,11 @@ class Dashboard extends Page
             $quantityRemainingMetric->iconColor(Color::RED);
         }
 
-        $currentBody = Body::query()
+        $bodyRecords = Body::query()
             ->orderByDesc('created_at')
             ->orderByDesc('id')
-            ->first();
+            ->get();
+        $currentBody = $bodyRecords->first();
 
         $caloriesYesterday = (int) Exercise::query()
             ->createdYesterday()
@@ -95,15 +98,60 @@ class Dashboard extends Page
             ->sum('calories');
         $calorieMetric = static function (string $label, int $value): ValueMetric {
             $color = $value >= 500
-                ? 'green'
-                : ($value >= 250 ? 'yellow' : 'pink');
+                ? '#22c55e'
+                : ($value >= 250 ? '#eab308' : '#ec4899');
 
             return ValueMetric::make($label)
                 ->value($value)
                 ->progress(500)
                 ->customAttributes([
-                    'style' => "--color-primary: var(--color-{$color}-500)",
+                    'style' => sprintf(
+                        '--color-primary: %s',
+                        $color
+                    ),
                 ]);
+        };
+        $bodyMetric = static function (string $label, string $field, bool $showChange = true) use (
+            $currentBody,
+            $bodyRecords
+        ): ValueMetric {
+            $currentValue = $currentBody?->{$field};
+            $previousValue = $bodyRecords
+                ->skip(1)
+                ->first(static fn (Body $body): bool => $body->{$field} !== null)?->{$field};
+            $formatValue = static function (mixed $value): string {
+                if ($value === null) {
+                    return '—';
+                }
+
+                return rtrim(rtrim(number_format((float) $value, 2, '.', ''), '0'), '.');
+            };
+
+            $change = '';
+
+            if ($showChange && is_numeric($currentValue) && is_numeric($previousValue)) {
+                $difference = round((float) $currentValue - (float) $previousValue, 2);
+
+                if ($difference !== 0.0) {
+                    $color = $difference > 0 ? '#22c55e' : '#ef4444';
+                    $sign = $difference > 0 ? '+' : '-';
+                    $change = sprintf(
+                        '<span style="color:%s;font-size:50%%;">%s%s</span>',
+                        $color,
+                        $sign,
+                        $formatValue(abs($difference))
+                    );
+                }
+            }
+
+            return ValueMetric::make($label)
+                ->value($currentValue ?? '—')
+                ->valueFormat(sprintf(
+                    '<span style="display:flex;align-items:baseline;justify-content:space-between;gap:.5rem;width:100%%;">'
+                    .'<span>%s</span>%s</span>',
+                    $formatValue($currentValue),
+                    $change
+                ));
         };
 
         return [
@@ -144,38 +192,25 @@ class Dashboard extends Page
             Box::make('Текущие параметры тела', [
                 Grid::make([
                     Column::make([
-                        ValueMetric::make('Вес')
-                            ->value($currentBody?->weight ?? '—'),
-                        ValueMetric::make('Пульс в покое')
-                            ->value($currentBody?->pulse ?? '—'),
-                        ValueMetric::make('Шея')
-                            ->value($currentBody?->neck ?? '—'),
-                        ValueMetric::make('Плечи')
-                            ->value($currentBody?->shoulders ?? '—'),
+                        $bodyMetric('Вес', 'weight'),
+                        $bodyMetric('Пульс в покое', 'pulse'),
+                        $bodyMetric('Шея', 'neck'),
+                        $bodyMetric('Плечи', 'shoulders'),
                     ], 3),
                     Column::make([
-                        ValueMetric::make('Грудь')
-                            ->value($currentBody?->chest ?? '—'),
-                        ValueMetric::make('Талия')
-                            ->value($currentBody?->waist ?? '—'),
-                        ValueMetric::make('Живот')
-                            ->value($currentBody?->abdomen ?? '—'),
-                        ValueMetric::make('Бицепс')
-                            ->value($currentBody?->bicep ?? '—'),
+                        $bodyMetric('Грудь', 'chest'),
+                        $bodyMetric('Талия', 'waist'),
+                        $bodyMetric('Живот', 'abdomen'),
+                        $bodyMetric('Бицепс', 'bicep'),
                     ], 3),
                     Column::make([
-                        ValueMetric::make('Запястье')
-                            ->value($currentBody?->wrist ?? '—'),
-                        ValueMetric::make('Бедра')
-                            ->value($currentBody?->hips ?? '—'),
-                        ValueMetric::make('Бедро')
-                            ->value($currentBody?->hip ?? '—'),
-                        ValueMetric::make('Голень')
-                            ->value($currentBody?->shin ?? '—'),
+                        $bodyMetric('Запястье', 'wrist'),
+                        $bodyMetric('Бедра', 'hips'),
+                        $bodyMetric('Бедро', 'hip'),
+                        $bodyMetric('Голень', 'shin'),
                     ], 3),
                     Column::make([
-                        ValueMetric::make('Лодыжка')
-                            ->value($currentBody?->ankle ?? '—'),
+                        $bodyMetric('Лодыжка', 'ankle'),
                     ], 3),
                 ]),
             ]),
