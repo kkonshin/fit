@@ -77,6 +77,11 @@ class Dashboard extends Page
             $quantityRemainingMetric->iconColor(Color::RED);
         }
 
+        $currentBody = Body::query()
+            ->orderByDesc('created_at')
+            ->orderByDesc('id')
+            ->first();
+
         return [
             Grid::make([
                 Column::make([
@@ -105,6 +110,44 @@ class Dashboard extends Page
                     LineChartMetric::make('Вес')
                         ->series(SeriesItem::make('Вес', $weights)),
                 ], 6),
+            ]),
+            Box::make('Текущие параметры тела', [
+                Grid::make([
+                    Column::make([
+                        ValueMetric::make('Вес')
+                            ->value($currentBody?->weight ?? '—'),
+                        ValueMetric::make('Пульс в покое')
+                            ->value($currentBody?->pulse ?? '—'),
+                        ValueMetric::make('Шея')
+                            ->value($currentBody?->neck ?? '—'),
+                        ValueMetric::make('Плечи')
+                            ->value($currentBody?->shoulders ?? '—'),
+                    ], 3),
+                    Column::make([
+                        ValueMetric::make('Грудь')
+                            ->value($currentBody?->chest ?? '—'),
+                        ValueMetric::make('Талия')
+                            ->value($currentBody?->waist ?? '—'),
+                        ValueMetric::make('Живот')
+                            ->value($currentBody?->abdomen ?? '—'),
+                        ValueMetric::make('Бицепс')
+                            ->value($currentBody?->bicep ?? '—'),
+                    ], 3),
+                    Column::make([
+                        ValueMetric::make('Запястье')
+                            ->value($currentBody?->wrist ?? '—'),
+                        ValueMetric::make('Бедра')
+                            ->value($currentBody?->hips ?? '—'),
+                        ValueMetric::make('Бедро')
+                            ->value($currentBody?->hip ?? '—'),
+                        ValueMetric::make('Голень')
+                            ->value($currentBody?->shin ?? '—'),
+                    ], 3),
+                    Column::make([
+                        ValueMetric::make('Лодыжка')
+                            ->value($currentBody?->ankle ?? '—'),
+                    ], 3),
+                ]),
             ]),
         ];
     }
