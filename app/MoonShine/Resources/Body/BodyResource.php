@@ -9,17 +9,19 @@ use App\MoonShine\Resources\Body\Pages\BodyDetailPage;
 use App\MoonShine\Resources\Body\Pages\BodyFormPage;
 use App\MoonShine\Resources\Body\Pages\BodyIndexPage;
 use App\MoonShine\Resources\Concerns\RedirectAfterSaveToIndex;
+use App\MoonShine\Resources\CachedModelResource;
 use MoonShine\Contracts\Core\PageContract;
-use MoonShine\Laravel\Resources\ModelResource;
 
 /**
- * @extends ModelResource<Body, BodyIndexPage, BodyFormPage, BodyDetailPage>
+ * @extends CachedModelResource<Body, BodyIndexPage, BodyFormPage, BodyDetailPage>
  */
-class BodyResource extends ModelResource
+class BodyResource extends CachedModelResource
 {
     use RedirectAfterSaveToIndex;
 
     protected string $model = Body::class;
+
+    protected int $itemsPerPage = 10;
 
     protected string $sortColumn = 'created_at';
 

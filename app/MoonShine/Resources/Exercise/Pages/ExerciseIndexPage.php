@@ -14,7 +14,6 @@ use MoonShine\Laravel\QueryTags\QueryTag;
 use MoonShine\Support\ListOf;
 use MoonShine\UI\Components\Metrics\Wrapped\Metric;
 use MoonShine\UI\Components\Table\TableBuilder;
-use MoonShine\UI\Fields\Json;
 use MoonShine\UI\Fields\Number;
 use MoonShine\UI\Fields\Preview;
 use MoonShine\UI\Fields\Text;
@@ -38,13 +37,6 @@ class ExerciseIndexPage extends IndexPage
                 ->sortable(),
             Text::make('Активность', 'name')->sortable(),
             Number::make('Затраты калорий', 'calories')->sortable(),
-            Number::make('Продолжительность', 'duration'),
-            Number::make('Средний пульс', 'pulse_avg'),
-            Number::make('Максимальный пульс', 'pulse_max'),
-            Json::make('Дополнительные сведения', 'extra')
-                ->fields([
-                    Text::make('Расстояние', 'distance'),
-                ]),
         ];
     }
 

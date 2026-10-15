@@ -11,6 +11,8 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\Pages\Crud\DetailPage;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Json;
+use MoonShine\UI\Fields\Number;
 use MoonShine\UI\Fields\Preview;
 use MoonShine\UI\Fields\Text;
 use Throwable;
@@ -30,6 +32,14 @@ class ExerciseDetailPage extends DetailPage
             Preview::make('Дата', 'created_at')->changePreview(fn ($date) => Carbon::parse($date)
                 ->isoFormat('D MMMM YYYY')),
             Text::make('Активность', 'name'),
+            Number::make('Затраты калорий', 'calories')->sortable(),
+            Number::make('Продолжительность', 'duration'),
+            Number::make('Средний пульс', 'pulse_avg'),
+            Number::make('Максимальный пульс', 'pulse_max'),
+            Json::make('Дополнительные сведения', 'extra')
+                ->fields([
+                    Text::make('Расстояние', 'distance'),
+                ]),
         ];
     }
 

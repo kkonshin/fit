@@ -6,6 +6,9 @@ namespace App\MoonShine\Resources\Concerns;
 
 trait RedirectAfterSaveToIndex
 {
+    /**
+     * @return string|null
+     */
     public function getRedirectAfterSave(): ?string
     {
         return $this->getIndexPageUrl();
