@@ -13,6 +13,7 @@ use MoonShine\Laravel\QueryTags\QueryTag;
 use MoonShine\Support\ListOf;
 use MoonShine\UI\Components\Metrics\Wrapped\Metric;
 use MoonShine\UI\Components\Table\TableBuilder;
+use MoonShine\UI\Fields\Date;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Image;
 use MoonShine\UI\Fields\Text;
@@ -32,9 +33,10 @@ class ImageIndexPage extends IndexPage
     {
         return [
             ID::make(),
-            Text::make('Путь', 'path'),
-            Text::make('Комментарий', 'comment'),
             Image::make('Превью', 'path'),
+            Date::make('Дата создания', 'created_at')
+                ->format('d-m-Y'),
+            Text::make('Комментарий', 'comment'),
         ];
     }
 
