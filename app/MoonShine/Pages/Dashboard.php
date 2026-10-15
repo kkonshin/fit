@@ -85,21 +85,44 @@ class Dashboard extends Page
             ->orderByDesc('id')
             ->first();
 
+        $caloriesYesterday = (int) Exercise::query()
+            ->createdYesterday()
+            ->get()
+            ->sum('calories');
+        $caloriesToday = (int) Exercise::query()
+            ->createdToday()
+            ->get()
+            ->sum('calories');
+        $calorieMetric = static function (string $label, int $value): ValueMetric {
+            $color = $value >= 500
+                ? 'green'
+                : ($value >= 250 ? 'yellow' : 'pink');
+
+            return ValueMetric::make($label)
+                ->value($value)
+                ->progress(500)
+                ->customAttributes([
+                    'style' => "--color-primary: var(--color-{$color}-500)",
+                ]);
+        };
+
         return [
-            Grid::make([
-                Column::make([
-                    ActionButton::make(
-                        'Создать упражнение',
-                        app(ExerciseResource::class)->getFormPageUrl()
-                    )->primary(),
-                ], 6),
-                Column::make([
-                    ActionButton::make(
-                        'Добавить параметры тела',
-                        app(BodyResource::class)->getFormPageUrl()
-                    )->primary(),
-                ], 6),
-            ]),
+            Box::make([
+                Grid::make([
+                    Column::make([
+                        ActionButton::make(
+                            'Создать упражнение',
+                            app(ExerciseResource::class)->getFormPageUrl()
+                        )->primary(),
+                    ], 6),
+                    Column::make([
+                        ActionButton::make(
+                            'Добавить параметры тела',
+                            app(BodyResource::class)->getFormPageUrl()
+                        )->primary(),
+                    ], 6),
+                ]),
+            ])->class('mb-6'),
             Grid::make([
                 Column::make([
                     Box::make([
@@ -108,18 +131,8 @@ class Dashboard extends Page
                             ? [Alert::make('bell-alert', Color::RED)
                                 ->content('Требуется оплата!')]
                             : []),
-                        ValueMetric::make('Затраты калорий вчера')
-                            ->value(static fn (): int => Exercise::query()
-                                ->createdYesterday()
-                                ->get()
-                                ->sum('calories'))
-                            ->progress(500),
-                        ValueMetric::make('Затраты калорий сегодня')
-                            ->value(static fn (): int => Exercise::query()
-                                ->createdToday()
-                                ->get()
-                                ->sum('calories'))
-                            ->progress(500),
+                        $calorieMetric('Затраты калорий вчера', $caloriesYesterday),
+                        $calorieMetric('Затраты калорий сегодня', $caloriesToday),
                     ]),
 
                 ], 6),
