@@ -51,6 +51,22 @@ final class MoonShineLayout extends AppLayout
     }
 
     /**
+     * @return array
+     */
+    protected function getFooterMenu(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return string
+     */
+    protected function getFooterCopyright(): string
+    {
+        return '';
+    }
+
+    /**
      * @param  ColorManager  $colorManager
      */
     protected function colors(ColorManagerContract $colorManager): void
