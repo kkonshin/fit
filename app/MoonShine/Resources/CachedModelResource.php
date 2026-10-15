@@ -9,13 +9,34 @@ use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
+use MoonShine\Laravel\Models\MoonshineUser;
+use MoonShine\Laravel\MoonShineAuth;
 use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Support\Enums\Ability;
+use Psr\SimpleCache\InvalidArgumentException;
 use Throwable;
 
 abstract class CachedModelResource extends ModelResource
 {
     /**
+     * @param Ability $ability
+     * @return bool
+     */
+    protected function isCan(Ability $ability): bool
+    {
+        $user = MoonShineAuth::getGuard()->user();
+
+        if ($user instanceof MoonshineUser && ! $user->isSuperUser()) {
+            return in_array($ability, [Ability::VIEW_ANY, Ability::VIEW], true);
+        }
+
+        return parent::isCan($ability);
+    }
+
+    /**
+     * @return iterable|Collection|LazyCollection|CursorPaginator|Paginator
      * @throws Throwable
+     * @throws InvalidArgumentException
      */
     public function getItems(): iterable|Collection|LazyCollection|CursorPaginator|Paginator
     {
