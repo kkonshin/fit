@@ -36,11 +36,10 @@ class BodyFormPage extends FormPage
      */
     protected function fields(): iterable
     {
-        $previousWeight = Body::query()
-            ->select('weight')
-            ->orderBy('updated_at', 'desc')
-            ->first()
-            ->weight;
+        $previousBody = Body::query()
+            ->orderByDesc('created_at')
+            ->orderByDesc('id')
+            ->first();
 
         return [
             Grid::make([
@@ -51,21 +50,31 @@ class BodyFormPage extends FormPage
                     Box::make('Параметры:', [
                         ID::make(),
                         FloatNumber::make('Вес', 'weight')
-                            ->default($previousWeight)
+                            ->default($previousBody?->weight)
                             ->step(0.05)
                             ->buttons(),
-                        Number::make('Пульс в покое', 'pulse'),
-                        Number::make('Шея', 'neck'),
-                        Number::make('Грудь', 'chest'),
-                        Number::make('Талия', 'waist'),
-                        Number::make('Живот', 'abdomen'),
-                        Number::make('Предплечье', 'bicep'),
-                        Number::make('Запястье', 'wrist'),
-                        Number::make('Бедра', 'hips'),
-                        Number::make('Бедро', 'hip'),
-                        Number::make('Голень', 'shin'),
-                        Number::make('Лодыжка', 'ankle'),
-                        // TODO сохранять оригинальные названия, или присваивать в форме + поле с комментарием?
+                        Number::make('Пульс в покое', 'pulse')
+                            ->default($previousBody?->pulse),
+                        Number::make('Шея', 'neck')
+                            ->default($previousBody?->neck),
+                        Number::make('Грудь', 'chest')
+                            ->default($previousBody?->chest),
+                        Number::make('Талия', 'waist')
+                            ->default($previousBody?->waist),
+                        Number::make('Живот', 'abdomen')
+                            ->default($previousBody?->abdomen),
+                        Number::make('Предплечье', 'bicep')
+                            ->default($previousBody?->bicep),
+                        Number::make('Запястье', 'wrist')
+                            ->default($previousBody?->wrist),
+                        Number::make('Бедра', 'hips')
+                            ->default($previousBody?->hips),
+                        Number::make('Бедро', 'hip')
+                            ->default($previousBody?->hip),
+                        Number::make('Голень', 'shin')
+                            ->default($previousBody?->shin),
+                        Number::make('Лодыжка', 'ankle')
+                            ->default($previousBody?->ankle),
                         RelationRepeater::make(
                             'Изображения',
                             'images',
