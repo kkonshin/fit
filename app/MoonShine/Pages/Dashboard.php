@@ -27,6 +27,14 @@ use function sprintf;
 #[SkipMenu]
 class Dashboard extends Page
 {
+    private const string COLOR_GREEN = '#22c55e';
+
+    private const string COLOR_YELLOW = '#eab308';
+
+    private const string COLOR_PINK = '#ec4899';
+
+    private const string COLOR_RED = '#ef4444';
+
     /**
      * @return array<string, string>
      */
@@ -92,14 +100,16 @@ class Dashboard extends Page
             ->createdYesterday()
             ->get()
             ->sum('calories');
+
         $caloriesToday = (int) Exercise::query()
             ->createdToday()
             ->get()
             ->sum('calories');
+
         $calorieMetric = static function (string $label, int $value): ValueMetric {
             $color = $value >= 500
-                ? '#22c55e'
-                : ($value >= 250 ? '#eab308' : '#ec4899');
+                ? self::COLOR_GREEN
+                : ($value >= 250 ? self::COLOR_YELLOW : self::COLOR_PINK);
 
             return ValueMetric::make($label)
                 ->value($value)
@@ -111,20 +121,31 @@ class Dashboard extends Page
                     ),
                 ]);
         };
+
         $bodyMetric = static function (string $label, string $field, bool $showChange = true) use (
             $currentBody,
             $bodyRecords
         ): ValueMetric {
             $currentValue = $currentBody?->{$field};
+
             $previousValue = $bodyRecords
                 ->skip(1)
                 ->first(static fn (Body $body): bool => $body->{$field} !== null)?->{$field};
+
             $formatValue = static function (mixed $value): string {
                 if ($value === null) {
                     return '—';
                 }
 
-                return rtrim(rtrim(number_format((float) $value, 2, '.', ''), '0'), '.');
+                return rtrim(
+                    rtrim(
+                        number_format((float) $value,
+                            2,
+                            '.',
+                            ''),
+                        '0'
+                    ), '.'
+                );
             };
 
             $change = '';
@@ -133,7 +154,7 @@ class Dashboard extends Page
                 $difference = round((float) $currentValue - (float) $previousValue, 2);
 
                 if ($difference !== 0.0) {
-                    $color = $difference > 0 ? '#22c55e' : '#ef4444';
+                    $color = $difference > 0 ? self::COLOR_GREEN : self::COLOR_RED;
                     $sign = $difference > 0 ? '+' : '-';
                     $change = sprintf(
                         '<span style="color:%s;font-size:50%%;">%s%s</span>',
